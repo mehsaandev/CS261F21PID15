@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="newPrefix">
+    <file>search_30px.png</file>
+  </qresource>
+</RCC>

@@ -1,0 +1,37 @@
+<RCC>
+  <qresource prefix="newPrefix">
+    <file>electronics_32px.png</file>
+    <file>dn.png</file>
+    <file>up_20px.png</file>
+    <file>up.png</file>
+    <file>white.png</file>
+    <file>search.png</file>
+    <file>stop_30px.png</file>
+    <file>pause.png</file>
+    <file>play.png</file>
+    <file>timer.png</file>
+    <file>plus_+_green.png</file>
+    <file>share_30pxgreen.png</file>
+    <file>settings_green.png</file>
+    <file>plus_+_y.png</file>
+    <file>share_ok.png</file>
+    <file>share_yellow.png</file>
+    <file>settings_yellow.png</file>
+    <file>plus_+_30px.png</file>
+    <file>settings_30px.png</file>
+    <file>sort.png</file>
+    <file>multicast_75px.png</file>
+    <file>alg.png</file>
+    <file>graph_clique_80px.png</file>
+    <file>d.png</file>
+    <file>down_button_20px.png</file>
+    <file>worker.png</file>
+    <file>yellow.png</file>
+    <file>360_degrees_25px.png</file>
+    <file>green.png</file>
+  </qresource>
+  <qresource prefix="newPrefix">
+    <file>share_30px.png</file>
+  </qresource>
+  <qresource prefix="newPrefix"/>
+</RCC>
