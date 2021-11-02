@@ -229,17 +229,67 @@ font: 7pt &quot;MS Shell Dlg 2&quot;;</string>
         </property>
         <item>
          <property name="text">
-          <string>Merge Sort</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
           <string>Bubble Sort</string>
          </property>
         </item>
         <item>
          <property name="text">
           <string>Insertion Sort</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Merge Sort</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Selection Sort</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Quick Sort</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Counting Sort</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Comb Sort</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Bucket Sort</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Recursive Bubble Sort</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Radix Sort</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Shell Sort</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Tree Sort</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Brick Sort</string>
          </property>
         </item>
        </widget>
@@ -352,12 +402,32 @@ font: 7pt &quot;MS Shell Dlg 2&quot;;</string>
         </property>
         <item>
          <property name="text">
-          <string>Alphabetically</string>
+          <string>Descending Salary</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Numbers</string>
+          <string>Ascending Salary</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Job Location Alphabetically Descending</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Job Location Alphabetically Ascending</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Job Title Alphabetically Descending</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Job Title Alphabetically Descending</string>
          </property>
         </item>
        </widget>
@@ -815,7 +885,7 @@ border-radius: 6px</string>
       </column>
       <column>
        <property name="text">
-        <string>New Column</string>
+        <string>Job Experience</string>
        </property>
       </column>
       <column>
@@ -1279,7 +1349,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb
   </widget>
  </widget>
  <resources>
-  <include location="../Documents/Semester 3/Ok.qrc"/>
+  <include location="Ok.qrc"/>
  </resources>
  <connections/>
 </ui>
