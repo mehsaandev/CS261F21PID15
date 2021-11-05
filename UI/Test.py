@@ -1,6 +1,11 @@
+from datetime import time
 from PyQt5 import QtCore, QtGui, QtWidgets
 import csv
+from numpy import array
 import pandas as pd
+import threading
+import time
+
 class Ui_JobSearchPortal(object):
     def setupUi(self, JobSearchPortal):
         JobSearchPortal.setObjectName("JobSearchPortal")
@@ -480,7 +485,8 @@ class Ui_JobSearchPortal(object):
         self.retranslateUi(JobSearchPortal)
         QtCore.QMetaObject.connectSlotsByName(JobSearchPortal)
         
-        self.label_22.mousePressEvent=self.play
+       
+        self.label_22.mousePressEvent = self.play
         self.label_9.mousePressEvent = self.sort
         
 #         JobTitle Sort
@@ -508,20 +514,19 @@ class Ui_JobSearchPortal(object):
         self.label_41.mousePressEvent = self.sortJobSaleryInvert
 
 #       Job Description Sort
-        self.label_38.mousePressEvent = self.sortJobDesc
+
+        self.label_38.mousePressEvent =self.sortJobDesc
         self.label_42.mousePressEvent = self.sortJobDescInvert
-
-
-
-
-        
     
 
     def sort(self,eve):
         print("Sorted Data")
+
     def play(self,eve):
         print("Play")
+        # threadPlay = threading.Thread(target= self.loaddata)
         self.loaddata()
+        # threadPlay.start()
 
     def retranslateUi(self, JobSearchPortal):
         _translate = QtCore.QCoreApplication.translate
@@ -598,6 +603,8 @@ class Ui_JobSearchPortal(object):
             self.tableWidget.setItem(row, 2, QtWidgets.QTableWidgetItem(key))
             self.tableWidget.setItem(row, 3, QtWidgets.QTableWidgetItem(exp))
             self.tableWidget.setItem(row, 6, QtWidgets.QTableWidgetItem(des))
+            progress = int((row / len(JobTitle)) * 100 + 1).__ceil__()
+            self.progressBar.setValue(progress)
             #self.tableWidget.setItem(row, 2, QtWidgets.QTableWidgetItem(person["address"]))
             row=row+1
             
@@ -607,23 +614,123 @@ class Ui_JobSearchPortal(object):
 # ------------ Insersion Sort
 
     def insertionSort(self,arr):
+        startTime = time.time()
         for i in range(1, len(arr)):
             key = (arr[i])
             j = i-1
-            while j >= 0 and key < (arr[j])[0] :
+            while j >= 0 and str(key).lower()[0]< str(arr[j]).lower()[0]:
                     (arr[j + 1]) = (arr[j])
                     j -= 1
             (arr[j + 1]) = key
+        endTime = time.time()
+        self.lineEdit_2.setText("{:.2f}".format(endTime-startTime)+"s")
             
     def insertionSortInverse(self,arr):
+        startTime = time.time()
         for i in range(1, len(arr)):
             key = (arr[i])
             j = i-1
-            while j >= 0 and key > (arr[j])[0] :
+            while j >= 0 and str(key).lower()[0]>str(arr[j]).lower()[0]:
                     (arr[j + 1]) = (arr[j])
                     j -= 1
             (arr[j + 1]) = key
-    
+        endTime = time.time()
+        self.lineEdit_2.setText("{:.2f}".format(endTime-startTime)+"s")
+
+# ------------ Merge Sort ------------ 
+    def mergeSort(self,Arr):
+        startTime = time.time()
+        m=len(Arr)
+        if len(Arr)>1:
+                r=int(len(Arr)/2)
+                Left=Arr[:r]
+                Right=Arr[r:]
+                self.mergeSort(Left)
+                self.mergeSort(Right)
+                i=0
+                j=0
+                k=0
+                while (i<len(Left) and j<len(Right)):
+                        if Left[i][0]<Right[j][0]:
+                                Arr[k]=Left[i]
+                                i=i+1
+                                k=k+1
+                        else:
+                                Arr[k]=Right[j]
+                                j=j+1
+                                k=k+1
+                while i<len(Left):
+                        Arr[k]=Left[i]
+                        i=i+1
+                        k=k+1
+                        while j<len(Right):
+                                Arr[k]=Right[j]
+                                j=j+1
+                                k=k+1
+        endTime = time.time()
+        self.lineEdit_2.setText("{:.2f}".format(endTime-startTime)+"s")
+
+    def mergeSortInvert(self,Arr):
+        startTime = time.time()
+        m=len(Arr)
+        if len(Arr)>1:
+                r=int(len(Arr)/2)
+                Left=Arr[:r]
+                Right=Arr[r:]
+                self.mergeSort(Left)
+                self.mergeSort(Right)
+                i=0
+                j=0
+                k=0
+                while (i<len(Left) and j<len(Right)):
+                        if Left[i][0]>Right[j][0]:
+                                Arr[k]=Left[i]
+                                i=i+1
+                                k=k+1
+                        else:
+                                Arr[k]=Right[j]
+                                j=j+1
+                                k=k+1
+                while i<len(Left):
+                        Arr[k]=Left[i]
+                        i=i+1
+                        k=k+1
+                        while j<len(Right):
+                                Arr[k]=Right[j]
+                                j=j+1
+                                k=k+1
+        endTime = time.time()
+        self.lineEdit_2.setText("{:.2f}".format(endTime-startTime)+"s")
+
+# ------------ Quick Sort ------------ 
+    def quickSort(self,arr, low, high):
+        startTime = time.time()
+        if (low < high):
+                pi = self.partition(arr, low, high)
+                self.quickSort(arr, low, pi - 1)
+                self.quickSort(arr, pi + 1, high)
+        endTime = time.time()
+        self.lineEdit_2.setText("{:.2f}".format(endTime-startTime)+"s")
+
+    def partition (self,arr, low, high):
+        pivot = arr[high] 
+        i = (low - 1) 
+        for j in range(low,high):
+                if (arr[j][0] < pivot[0]):
+                        i+=1
+                        temp = arr[i]
+                        arr[i] = arr[j]
+                        arr[j] = temp
+        temp = arr[i+1]
+        arr[i+1] = arr[high]
+        arr[high] = temp
+        return (i + 1)
+
+
+
+
+
+
     
     def InsertionInTable(self,arr,col):
         row = 0
@@ -635,82 +742,476 @@ class Ui_JobSearchPortal(object):
         
 #  Job Title Sort Defination
     def SortJobTitle(self,eve):
-        JobTitle = pd.read_csv("Salery.csv")['Job Title']
-        self.insertionSort(JobTitle)
-        self.InsertionInTable(JobTitle,0)
+        size = self.tableWidget.rowCount()
+        Array = []
+        for i in range(size):
+                Array.append(self.tableWidget.model().index(i,0).data())
+        if (self.comboBox.currentText() == "Insertion Sort"):
+                self.insertionSort(Array)
+        elif(self.comboBox.currentText() == "Merge Sort"):
+                self.mergeSort(Array)
+        # elif(self.comboBox.currentText() == "Bubble Sort"):
+        #         #  Bubble Sort Call
+        # elif(self.comboBox.currentText() == "Selection Sort"):
+        #         #  Selection Sort Call
+        elif(self.comboBox.currentText() == "Quick Sort"):
+                self.quickSort(Array,0,len(Array)-1)
+        # elif(self.comboBox.currentText() == "Counting Sort"):
+        #         #  Coumting Sort Call
+        # elif(self.comboBox.currentText() == "Comb Sort"):
+        #         #  Comb Sort Call
+        # elif(self.comboBox.currentText() == "Bucket Sort"):
+        #         #  Bucket Sort Call
+        # elif(self.comboBox.currentText() == "Recursive Bubble Sort"):
+        #         #  Recursive Bubble Call
+        # elif(self.comboBox.currentText() == "Radix Sort"):
+        #         #  Radic Sort Call
+        # elif(self.comboBox.currentText() == "Shell Sort"):
+        #         #  Shell Sort Call
+        # elif(self.comboBox.currentText() == "Tree Sort"):
+        #         #  Tree Sort Call
+        # elif(self.comboBox.currentText() == "Brick Sort"):
+        #         #  Brick Sort Call
+        self.InsertionInTable(Array,0)
+       
 
     def sortJobTitleInvert(self,eve):
-        JobTitle = pd.read_csv("Salery.csv")['Job Title']
-        self.insertionSortInverse(JobTitle)
-        self.InsertionInTable(JobTitle,0)
+        size = self.tableWidget.rowCount()
+        Array = []
+        for i in range(size):
+                Array.append(self.tableWidget.model().index(i,0).data())
+        if (self.comboBox.currentText() == "Insertion Sort"):
+                self.insertionSortInverse(Array)
+        elif(self.comboBox.currentText() == "Merge Sort"):
+                self.mergeSortInvert(Array)
+        # elif(self.comboBox.currentText() == "Bubble Sort"):
+        #         #  Bubble Sort Call
+        # elif(self.comboBox.currentText() == "Selection Sort"):
+        #         #  Selection Sort Call
+        elif(self.comboBox.currentText() == "Quick Sort"):
+                self.quickSort(Array,0,len(Array)-1)
+        # elif(self.comboBox.currentText() == "Counting Sort"):
+        #         #  Coumting Sort Call
+        # elif(self.comboBox.currentText() == "Comb Sort"):
+        #         #  Comb Sort Call
+        # elif(self.comboBox.currentText() == "Bucket Sort"):
+        #         #  Bucket Sort Call
+        # elif(self.comboBox.currentText() == "Recursive Bubble Sort"):
+        #         #  Recursive Bubble Call
+        # elif(self.comboBox.currentText() == "Radix Sort"):
+        #         #  Radic Sort Call
+        # elif(self.comboBox.currentText() == "Shell Sort"):
+        #         #  Shell Sort Call
+        # elif(self.comboBox.currentText() == "Tree Sort"):
+        #         #  Tree Sort Call
+        # elif(self.comboBox.currentText() == "Brick Sort"):
+        #         #  Brick Sort Call
+        self.InsertionInTable(Array,0)
 
 #  Company name Sort Defination
     def sortCompanyName(self,eve):
-        companyName = pd.read_csv("Salery.csv")['Company Name']
-        self.insertionSort(companyName)
-        self.InsertionInTable(companyName,1)
+        size = self.tableWidget.rowCount()
+        Array = []
+        for i in range(size):
+                Array.append(self.tableWidget.model().index(i,1).data())
+        if (self.comboBox.currentText() == "Insertion Sort"):
+                self.insertionSort(Array)
+        elif(self.comboBox.currentText() == "Merge Sort"):
+                self.mergeSort(Array)
+        # elif(self.comboBox.currentText() == "Bubble Sort"):
+        #         #  Bubble Sort Call
+        # elif(self.comboBox.currentText() == "Selection Sort"):
+        #         #  Selection Sort Call
+        elif(self.comboBox.currentText() == "Quick Sort"):
+                self.quickSort(Array,0,len(Array)-1)
+        # elif(self.comboBox.currentText() == "Counting Sort"):
+        #         #  Coumting Sort Call
+        # elif(self.comboBox.currentText() == "Comb Sort"):
+        #         #  Comb Sort Call
+        # elif(self.comboBox.currentText() == "Bucket Sort"):
+        #         #  Bucket Sort Call
+        # elif(self.comboBox.currentText() == "Recursive Bubble Sort"):
+        #         #  Recursive Bubble Call
+        # elif(self.comboBox.currentText() == "Radix Sort"):
+        #         #  Radic Sort Call
+        # elif(self.comboBox.currentText() == "Shell Sort"):
+        #         #  Shell Sort Call
+        # elif(self.comboBox.currentText() == "Tree Sort"):
+        #         #  Tree Sort Call
+        # elif(self.comboBox.currentText() == "Brick Sort"):
+        #         #  Brick Sort Call
+        self.InsertionInTable(Array,1)
 
     def sortCompanyNameInvert(self,eve):
-        companyName = pd.read_csv("Salery.csv")['Company Name']
-        self.insertionSortInverse(companyName)
-        self.InsertionInTable(companyName,1)
+        size = self.tableWidget.rowCount()
+        Array = []
+        for i in range(size):
+                Array.append(self.tableWidget.model().index(i,1).data())
+        if (self.comboBox.currentText() == "Insertion Sort"):
+                self.insertionSortInverse(Array)
+        elif(self.comboBox.currentText() == "Merge Sort"):
+                self.mergeSortInvert(Array)
+        # elif(self.comboBox.currentText() == "Bubble Sort"):
+        #         #  Bubble Sort Call
+        # elif(self.comboBox.currentText() == "Selection Sort"):
+        #         #  Selection Sort Call
+        elif(self.comboBox.currentText() == "Quick Sort"):
+                self.quickSort(Array,0,len(Array)-1)
+        # elif(self.comboBox.currentText() == "Counting Sort"):
+        #         #  Coumting Sort Call
+        # elif(self.comboBox.currentText() == "Comb Sort"):
+        #         #  Comb Sort Call
+        # elif(self.comboBox.currentText() == "Bucket Sort"):
+        #         #  Bucket Sort Call
+        # elif(self.comboBox.currentText() == "Recursive Bubble Sort"):
+        #         #  Recursive Bubble Call
+        # elif(self.comboBox.currentText() == "Radix Sort"):
+        #         #  Radic Sort Call
+        # elif(self.comboBox.currentText() == "Shell Sort"):
+        #         #  Shell Sort Call
+        # elif(self.comboBox.currentText() == "Tree Sort"):
+        #         #  Tree Sort Call
+        # elif(self.comboBox.currentText() == "Brick Sort"):
+        #         #  Brick Sort Call
+        self.InsertionInTable(Array,1)
 
 #  Key Skills Sort Defination
     def sortKeySkills(self,eve):
-        keySkils = pd.read_csv("Salery.csv")['Key Skills']
-        self.insertionSort(keySkils)
-        self.InsertionInTable(keySkils,2)
+        size = self.tableWidget.rowCount()
+        Array = []
+        for i in range(size):
+                Array.append(self.tableWidget.model().index(i,2).data())
+        if (self.comboBox.currentText() == "Insertion Sort"):
+                self.insertionSort(Array)
+        elif(self.comboBox.currentText() == "Merge Sort"):
+                self.mergeSort(Array)
+        # elif(self.comboBox.currentText() == "Bubble Sort"):
+        #         #  Bubble Sort Call
+        # elif(self.comboBox.currentText() == "Selection Sort"):
+        #         #  Selection Sort Call
+        elif(self.comboBox.currentText() == "Quick Sort"):
+                self.quickSort(Array,0,len(Array)-1)
+        # elif(self.comboBox.currentText() == "Counting Sort"):
+        #         #  Coumting Sort Call
+        # elif(self.comboBox.currentText() == "Comb Sort"):
+        #         #  Comb Sort Call
+        # elif(self.comboBox.currentText() == "Bucket Sort"):
+        #         #  Bucket Sort Call
+        # elif(self.comboBox.currentText() == "Recursive Bubble Sort"):
+        #         #  Recursive Bubble Call
+        # elif(self.comboBox.currentText() == "Radix Sort"):
+        #         #  Radic Sort Call
+        # elif(self.comboBox.currentText() == "Shell Sort"):
+        #         #  Shell Sort Call
+        # elif(self.comboBox.currentText() == "Tree Sort"):
+        #         #  Tree Sort Call
+        # elif(self.comboBox.currentText() == "Brick Sort"):
+        #         #  Brick Sort Call
+        self.InsertionInTable(Array,2)
     
     def sortKeySkillsInvert(self,eve):
-        keySkils = pd.read_csv("Salery.csv")['Key Skills']
-        self.insertionSortInverse(keySkils)
-        self.InsertionInTable(keySkils,2)
+        size = self.tableWidget.rowCount()
+        Array = []
+        for i in range(size):
+                Array.append(self.tableWidget.model().index(i,2).data())
+        if (self.comboBox.currentText() == "Insertion Sort"):
+                self.insertionSortInverse(Array)
+        elif(self.comboBox.currentText() == "Merge Sort"):
+                self.mergeSortInvert(Array)
+        # elif(self.comboBox.currentText() == "Bubble Sort"):
+        #         #  Bubble Sort Call
+        # elif(self.comboBox.currentText() == "Selection Sort"):
+        #         #  Selection Sort Call
+        elif(self.comboBox.currentText() == "Quick Sort"):
+                self.quickSort(Array,0,len(Array)-1)
+        # elif(self.comboBox.currentText() == "Counting Sort"):
+        #         #  Coumting Sort Call
+        # elif(self.comboBox.currentText() == "Comb Sort"):
+        #         #  Comb Sort Call
+        # elif(self.comboBox.currentText() == "Bucket Sort"):
+        #         #  Bucket Sort Call
+        # elif(self.comboBox.currentText() == "Recursive Bubble Sort"):
+        #         #  Recursive Bubble Call
+        # elif(self.comboBox.currentText() == "Radix Sort"):
+        #         #  Radic Sort Call
+        # elif(self.comboBox.currentText() == "Shell Sort"):
+        #         #  Shell Sort Call
+        # elif(self.comboBox.currentText() == "Tree Sort"):
+        #         #  Tree Sort Call
+        # elif(self.comboBox.currentText() == "Brick Sort"):
+        #         #  Brick Sort Call
+        self.InsertionInTable(Array,2)
 
 #  Job Experience Definition
     def sortJobExp(self,eve):
-        jobExp = pd.read_csv("Salery.csv")['Experience']
-        self.insertionSort(jobExp)
-        self.InsertionInTable(jobExp,3)
+        size = self.tableWidget.rowCount()
+        Array = []
+        for i in range(size):
+                Array.append(self.tableWidget.model().index(i,3).data())
+        if (self.comboBox.currentText() == "Insertion Sort"):
+                self.insertionSort(Array)
+        elif(self.comboBox.currentText() == "Merge Sort"):
+                self.mergeSort(Array)
+        # elif(self.comboBox.currentText() == "Bubble Sort"):
+        #         #  Bubble Sort Call
+        # elif(self.comboBox.currentText() == "Selection Sort"):
+        #         #  Selection Sort Call
+        elif(self.comboBox.currentText() == "Quick Sort"):
+                self.quickSort(Array,0,len(Array)-1)
+        # elif(self.comboBox.currentText() == "Counting Sort"):
+        #         #  Coumting Sort Call
+        # elif(self.comboBox.currentText() == "Comb Sort"):
+        #         #  Comb Sort Call
+        # elif(self.comboBox.currentText() == "Bucket Sort"):
+        #         #  Bucket Sort Call
+        # elif(self.comboBox.currentText() == "Recursive Bubble Sort"):
+        #         #  Recursive Bubble Call
+        # elif(self.comboBox.currentText() == "Radix Sort"):
+        #         #  Radic Sort Call
+        # elif(self.comboBox.currentText() == "Shell Sort"):
+        #         #  Shell Sort Call
+        # elif(self.comboBox.currentText() == "Tree Sort"):
+        #         #  Tree Sort Call
+        # elif(self.comboBox.currentText() == "Brick Sort"):
+        #         #  Brick Sort Call
+        self.InsertionInTable(Array,3)
 
     def sortJobExpInvert(self,eve):
-        jobExp = pd.read_csv("Salery.csv")['Experience']
-        self.insertionSortInverse(jobExp)
-        self.InsertionInTable(jobExp,3)
+        size = self.tableWidget.rowCount()
+        Array = []
+        for i in range(size):
+                Array.append(self.tableWidget.model().index(i,3).data())
+        if (self.comboBox.currentText() == "Insertion Sort"):
+                self.insertionSortInverse(Array)
+        elif(self.comboBox.currentText() == "Merge Sort"):
+                self.mergeSortInvert(Array)
+        # elif(self.comboBox.currentText() == "Bubble Sort"):
+        #         #  Bubble Sort Call
+        # elif(self.comboBox.currentText() == "Selection Sort"):
+        #         #  Selection Sort Call
+        elif(self.comboBox.currentText() == "Quick Sort"):
+                self.quickSort(Array,0,len(Array)-1)
+        # elif(self.comboBox.currentText() == "Counting Sort"):
+        #         #  Coumting Sort Call
+        # elif(self.comboBox.currentText() == "Comb Sort"):
+        #         #  Comb Sort Call
+        # elif(self.comboBox.currentText() == "Bucket Sort"):
+        #         #  Bucket Sort Call
+        # elif(self.comboBox.currentText() == "Recursive Bubble Sort"):
+        #         #  Recursive Bubble Call
+        # elif(self.comboBox.currentText() == "Radix Sort"):
+        #         #  Radic Sort Call
+        # elif(self.comboBox.currentText() == "Shell Sort"):
+        #         #  Shell Sort Call
+        # elif(self.comboBox.currentText() == "Tree Sort"):
+        #         #  Tree Sort Call
+        # elif(self.comboBox.currentText() == "Brick Sort"):
+        #         #  Brick Sort Call
+        self.InsertionInTable(Array,3)
 
 #  Job Loction Defination
     def sortJobLoc(self,eve):
-        jobLoc = pd.read_csv("Salery.csv")['Job Location']
-        self.insertionSort(jobLoc)
-        self.InsertionInTable(jobLoc,4)
+        size = self.tableWidget.rowCount()
+        Array = []
+        for i in range(size):
+                Array.append(self.tableWidget.model().index(i,4).data())
+        if (self.comboBox.currentText() == "Insertion Sort"):
+                self.insertionSort(Array)
+        elif(self.comboBox.currentText() == "Merge Sort"):
+                self.mergeSort(Array)
+        # elif(self.comboBox.currentText() == "Bubble Sort"):
+        #         #  Bubble Sort Call
+        # elif(self.comboBox.currentText() == "Selection Sort"):
+        #         #  Selection Sort Call
+        elif(self.comboBox.currentText() == "Quick Sort"):
+                self.quickSort(Array,0,len(Array)-1)
+        # elif(self.comboBox.currentText() == "Counting Sort"):
+        #         #  Coumting Sort Call
+        # elif(self.comboBox.currentText() == "Comb Sort"):
+        #         #  Comb Sort Call
+        # elif(self.comboBox.currentText() == "Bucket Sort"):
+        #         #  Bucket Sort Call
+        # elif(self.comboBox.currentText() == "Recursive Bubble Sort"):
+        #         #  Recursive Bubble Call
+        # elif(self.comboBox.currentText() == "Radix Sort"):
+        #         #  Radic Sort Call
+        # elif(self.comboBox.currentText() == "Shell Sort"):
+        #         #  Shell Sort Call
+        # elif(self.comboBox.currentText() == "Tree Sort"):
+        #         #  Tree Sort Call
+        # elif(self.comboBox.currentText() == "Brick Sort"):
+        #         #  Brick Sort Call
+        self.InsertionInTable(Array,4)
 
     def sortJobLocInvert(self,eve):
-        jobLoc = pd.read_csv("Salery.csv")['Job Location']
-        self.insertionSortInverse(jobLoc)
-        self.InsertionInTable(jobLoc,4)
+        size = self.tableWidget.rowCount()
+        Array = []
+        for i in range(size):
+                Array.append(self.tableWidget.model().index(i,4).data())
+        if (self.comboBox.currentText() == "Insertion Sort"):
+                self.insertionSortInverse(Array)
+        elif(self.comboBox.currentText() == "Merge Sort"):
+                self.mergeSortInvert(Array)
+        # elif(self.comboBox.currentText() == "Bubble Sort"):
+        #         #  Bubble Sort Call
+        # elif(self.comboBox.currentText() == "Selection Sort"):
+        #         #  Selection Sort Call
+        elif(self.comboBox.currentText() == "Quick Sort"):
+                self.quickSort(Array,0,len(Array)-1)
+        # elif(self.comboBox.currentText() == "Counting Sort"):
+        #         #  Coumting Sort Call
+        # elif(self.comboBox.currentText() == "Comb Sort"):
+        #         #  Comb Sort Call
+        # elif(self.comboBox.currentText() == "Bucket Sort"):
+        #         #  Bucket Sort Call
+        # elif(self.comboBox.currentText() == "Recursive Bubble Sort"):
+        #         #  Recursive Bubble Call
+        # elif(self.comboBox.currentText() == "Radix Sort"):
+        #         #  Radic Sort Call
+        # elif(self.comboBox.currentText() == "Shell Sort"):
+        #         #  Shell Sort Call
+        # elif(self.comboBox.currentText() == "Tree Sort"):
+        #         #  Tree Sort Call
+        # elif(self.comboBox.currentText() == "Brick Sort"):
+        #         #  Brick Sort Call
+        self.InsertionInTable(Array,4)
 
 #  Job Salery Defination
 
     def sortJobSalery(self,eve):
-        jobSalery = pd.read_csv("Salery.csv")['Job Salery']
-        self.insertionSort(jobSalery)
-        self.InsertionInTable(jobSalery,5)
+        size = self.tableWidget.rowCount()
+        Array = []
+        for i in range(size):
+                Array.append(self.tableWidget.model().index(i,5).data())
+        if (self.comboBox.currentText() == "Insertion Sort"):
+                self.insertionSort(Array)
+        elif(self.comboBox.currentText() == "Merge Sort"):
+                self.mergeSort(Array)
+        # elif(self.comboBox.currentText() == "Bubble Sort"):
+        #         #  Bubble Sort Call
+        # elif(self.comboBox.currentText() == "Selection Sort"):
+        #         #  Selection Sort Call
+        elif(self.comboBox.currentText() == "Quick Sort"):
+                self.quickSort(Array,0,len(Array)-1)
+        # elif(self.comboBox.currentText() == "Counting Sort"):
+        #         #  Coumting Sort Call
+        # elif(self.comboBox.currentText() == "Comb Sort"):
+        #         #  Comb Sort Call
+        # elif(self.comboBox.currentText() == "Bucket Sort"):
+        #         #  Bucket Sort Call
+        # elif(self.comboBox.currentText() == "Recursive Bubble Sort"):
+        #         #  Recursive Bubble Call
+        # elif(self.comboBox.currentText() == "Radix Sort"):
+        #         #  Radic Sort Call
+        # elif(self.comboBox.currentText() == "Shell Sort"):
+        #         #  Shell Sort Call
+        # elif(self.comboBox.currentText() == "Tree Sort"):
+        #         #  Tree Sort Call
+        # elif(self.comboBox.currentText() == "Brick Sort"):
+        #         #  Brick Sort Call
+        self.InsertionInTable(Array,5)
 
     def sortJobSaleryInvert(self,eve):
-        jobSalery = pd.read_csv("Salery.csv")['Job Salery']
-        self.insertionSortInverse(jobSalery)
-        self.InsertionInTable(jobSalery,5)
+        size = self.tableWidget.rowCount()
+        Array = []
+        for i in range(size):
+                Array.append(self.tableWidget.model().index(i,5).data())
+        if (self.comboBox.currentText() == "Insertion Sort"):
+                self.insertionSortInverse(Array)
+        elif(self.comboBox.currentText() == "Merge Sort"):
+                self.mergeSortInvert(Array)
+        # elif(self.comboBox.currentText() == "Bubble Sort"):
+        #         #  Bubble Sort Call
+        # elif(self.comboBox.currentText() == "Selection Sort"):
+        #         #  Selection Sort Call
+        elif(self.comboBox.currentText() == "Quick Sort"):
+                self.quickSort(Array,0,len(Array)-1)
+        # elif(self.comboBox.currentText() == "Counting Sort"):
+        #         #  Coumting Sort Call
+        # elif(self.comboBox.currentText() == "Comb Sort"):
+        #         #  Comb Sort Call
+        # elif(self.comboBox.currentText() == "Bucket Sort"):
+        #         #  Bucket Sort Call
+        # elif(self.comboBox.currentText() == "Recursive Bubble Sort"):
+        #         #  Recursive Bubble Call
+        # elif(self.comboBox.currentText() == "Radix Sort"):
+        #         #  Radic Sort Call
+        # elif(self.comboBox.currentText() == "Shell Sort"):
+        #         #  Shell Sort Call
+        # elif(self.comboBox.currentText() == "Tree Sort"):
+        #         #  Tree Sort Call
+        # elif(self.comboBox.currentText() == "Brick Sort"):
+        #         #  Brick Sort Call
+        self.InsertionInTable(Array,5)
 
 #  Job Description Defination
     def sortJobDesc(self,eve):
-        jobDesc = pd.read_csv("Salery.csv")['Job Description']
-        self.insertionSort(jobDesc)
-        self.InsertionInTable(jobDesc,6)
+        size = self.tableWidget.rowCount()
+        Array = []
+        for i in range(size):
+                Array.append(self.tableWidget.model().index(i,6).data())
+        if (self.comboBox.currentText() == "Insertion Sort"):
+                self.insertionSort(Array)
+        elif(self.comboBox.currentText() == "Merge Sort"):
+                self.mergeSort(Array)
+        # elif(self.comboBox.currentText() == "Bubble Sort"):
+        #         #  Bubble Sort Call
+        # elif(self.comboBox.currentText() == "Selection Sort"):
+        #         #  Selection Sort Call
+        elif(self.comboBox.currentText() == "Quick Sort"):
+                self.quickSort(Array,0,len(Array)-1)
+        # elif(self.comboBox.currentText() == "Counting Sort"):
+        #         #  Coumting Sort Call
+        # elif(self.comboBox.currentText() == "Comb Sort"):
+        #         #  Comb Sort Call
+        # elif(self.comboBox.currentText() == "Bucket Sort"):
+        #         #  Bucket Sort Call
+        # elif(self.comboBox.currentText() == "Recursive Bubble Sort"):
+        #         #  Recursive Bubble Call
+        # elif(self.comboBox.currentText() == "Radix Sort"):
+        #         #  Radic Sort Call
+        # elif(self.comboBox.currentText() == "Shell Sort"):
+        #         #  Shell Sort Call
+        # elif(self.comboBox.currentText() == "Tree Sort"):
+        #         #  Tree Sort Call
+        # elif(self.comboBox.currentText() == "Brick Sort"):
+        #         #  Brick Sort Call
+        self.InsertionInTable(Array,6)
 
     def sortJobDescInvert(self,eve):
-        jobDesc = pd.read_csv("Salery.csv")['Job Description']
-        self.insertionSortInverse(jobDesc)
-        self.InsertionInTable(jobDesc,6)
-
+        size = self.tableWidget.rowCount()
+        Array = []
+        for i in range(size):
+                Array.append(self.tableWidget.model().index(i,6).data())
+        startTime = time.time()
+        print(startTime)
+        if (self.comboBox.currentText() == "Insertion Sort"):
+                self.insertionSortInverse(Array)
+        elif(self.comboBox.currentText() == "Merge Sort"):
+                self.mergeSortInvert(Array)
+        # elif(self.comboBox.currentText() == "Bubble Sort"):
+        #         #  Bubble Sort Call
+        # elif(self.comboBox.currentText() == "Selection Sort"):
+        #         #  Selection Sort Call
+        elif(self.comboBox.currentText() == "Quick Sort"):
+                self.quickSort(Array,0,len(Array)-1)
+        # elif(self.comboBox.currentText() == "Counting Sort"):
+        #         #  Coumting Sort Call
+        # elif(self.comboBox.currentText() == "Comb Sort"):
+        #         #  Comb Sort Call
+        # elif(self.comboBox.currentText() == "Bucket Sort"):
+        #         #  Bucket Sort Call
+        # elif(self.comboBox.currentText() == "Recursive Bubble Sort"):
+        #         #  Recursive Bubble Call
+        # elif(self.comboBox.currentText() == "Radix Sort"):
+        #         #  Radic Sort Call
+        # elif(self.comboBox.currentText() == "Shell Sort"):
+        #         #  Shell Sort Call
+        # elif(self.comboBox.currentText() == "Tree Sort"):
+        #         #  Tree Sort Call
+        # elif(self.comboBox.currentText() == "Brick Sort"):
+        #         #  Brick Sort Call
+        self.InsertionInTable(Array,6)
 
         
 
